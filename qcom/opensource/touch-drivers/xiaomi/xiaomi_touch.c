@@ -572,9 +572,9 @@ static long xiaomi_touch_dev_ioctl(struct file *file, unsigned int cmd,
 		request.value = touch_mode_get(request.mode);
 		if (request.value < 0)
 			retval = -EINVAL;
-		else
-			retval = copy_to_user((int __user *)arg, &request,
-					      sizeof(request));
+		else if (copy_to_user((int __user *)arg, &request,
+				      sizeof(request)))
+			retval = -EFAULT;
 		break;
 	default:
 		retval = -EINVAL;
@@ -713,8 +713,9 @@ static int __init xiaomi_touch_init(void)
 
 	oneshot_sensor_enable_wq =
 		create_singlethread_workqueue("oneshot_sensor_enable_wq");
-	if (IS_ERR(oneshot_sensor_enable_wq)) {
+	if (!oneshot_sensor_enable_wq) {
 		pr_err("failed to create workqueue for oneshot sensor enabling\n");
+		ret = -ENOMEM;
 		goto create_oneshot_workqueue_err;
 	}
 	INIT_DELAYED_WORK(&oneshot_sensor_enable_work,
@@ -742,8 +743,9 @@ static int __init xiaomi_touch_init(void)
 
 	register_panel_wq =
 		create_singlethread_workqueue("touch_register_panel_wq");
-	if (IS_ERR(register_panel_wq)) {
+	if (!register_panel_wq) {
 		pr_err("failed to create workqueue for panel work\n");
+		ret = -ENOMEM;
 		goto create_workqueue_err;
 	}
 	INIT_DELAYED_WORK(&register_panel_work, register_panel_handler);
