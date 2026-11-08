@@ -2925,12 +2925,21 @@ static int goodix_ts_remove(struct platform_device *pdev)
 			goodix_ts_esd_off(core_data);
 		goodix_ts_unregister_notifier(&ts_esd->esd_notifier);
 
+		cancel_work_sync(&core_data->suspend_work);
+		cancel_work_sync(&core_data->resume_work);
+		cancel_delayed_work_sync(&core_data->gesture_work);
+
 		goodix_fw_update_uninit();
 		goodix_ts_input_dev_remove(core_data);
 		goodix_ts_pen_dev_remove(core_data);
 		goodix_ts_sysfs_exit(core_data);
 		goodix_ts_procfs_exit(core_data);
 		goodix_ts_power_off(core_data);
+
+		if (core_data->gesture_wq)
+			destroy_workqueue(core_data->gesture_wq);
+		if (core_data->power_wq)
+			destroy_workqueue(core_data->power_wq);
 	}
 
 	return 0;
