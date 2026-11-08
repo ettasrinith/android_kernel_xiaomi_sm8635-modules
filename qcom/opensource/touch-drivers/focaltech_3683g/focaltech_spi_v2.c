@@ -509,6 +509,7 @@ static int fts_ts_probe(struct spi_device *spi)
 	ret = fts_ts_probe_entry(ts_data);
 	if (ret) {
 		FTS_ERROR("Touch Screen(SPI BUS) driver probe fail");
+		fts_data = NULL;
 		spi_set_drvdata(spi, NULL);
 		kfree_safe(ts_data);
 		return ret;

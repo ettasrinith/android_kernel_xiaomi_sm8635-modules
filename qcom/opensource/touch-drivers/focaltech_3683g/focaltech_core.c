@@ -3023,6 +3023,7 @@ err_irq_req:
 	fts_point_report_check_exit(ts_data);
 	//fts_fhp_exit(ts_data);
 	fts_fwdbg_exit(ts_data);
+	fts_procfs_exit();
 	fts_remove_sysfs(ts_data);
 	fts_release_apk_debug_channel(ts_data);
 	input_unregister_device(ts_data->input_dev);
@@ -3121,6 +3122,7 @@ int fts_ts_remove_entry(struct fts_ts_data *ts_data)
 	kfree_safe(ts_data->bus_tx_buf);
 	kfree_safe(ts_data->bus_rx_buf);
 	kfree_safe(ts_data->pdata);
+	fts_data = NULL;
 
 	FTS_FUNC_EXIT();
 	return 0;
