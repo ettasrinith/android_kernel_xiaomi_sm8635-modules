@@ -48,7 +48,7 @@ static void goodix_register_for_panel_events(struct device_node *dp,
 	cookie = panel_event_notifier_register(PANEL_EVENT_NOTIFICATION_PRIMARY,
 			PANEL_EVENT_NOTIFIER_CLIENT_PRIMARY_TOUCH, active_panel,
 			&goodix_panel_notifier_callback, cd);
-	if (!cookie) {
+	if (IS_ERR_OR_NULL(cookie)) {
 		pr_err("Failed to register for panel events\n");
 		return;
 	}
