@@ -2371,6 +2371,7 @@ fts_panel_notifier_callback(enum panel_event_notifier_tag tag,
 
 	if (!notification) {
 		FTS_ERROR("Invalid notification\n");
+		return;
 	}
 
 	FTS_DEBUG(
@@ -2444,10 +2445,12 @@ static int fts_notifier_callback_init(struct fts_ts_data *ts_data)
 			PANEL_EVENT_NOTIFICATION_PRIMARY,
 			PANEL_EVENT_NOTIFIER_CLIENT_PRIMARY_TOUCH, active_panel,
 			fts_panel_notifier_callback, ts_data);
+		if (IS_ERR_OR_NULL(cookie)) {
+			FTS_ERROR("[DRM]panel_notifier_register fail: %ld",
+				  PTR_ERR(cookie));
+			return ret;
+		}
 		ts_data->notifier_cookie = cookie;
-		if (!cookie)
-			FTS_ERROR("[DRM]panel_notifier_register fail: %d",
-				  cookie);
 	}
 #else
 	ts_data->notifier_cookie = cookie;
