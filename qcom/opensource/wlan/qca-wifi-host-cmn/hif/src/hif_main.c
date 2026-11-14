@@ -3424,6 +3424,13 @@ void hif_config_irq_set_perf_affinity_hint(
 {
 	struct hif_softc *scn = HIF_GET_SOFTC(hif_ctx);
 
+	/* When the in-kernel SBalance IRQ balancer is enabled it owns IRQ
+	 * affinity decisions; the perf-affinity hints would fight it by
+	 * re-pinning WLAN IRQs to the performance CPUs on every traffic
+	 * event. Yield to the balancer instead. */
+	if (IS_ENABLED(CONFIG_IRQ_SBALANCE))
+		return;
+
 	hif_config_irq_affinity(scn);
 }
 
