@@ -22,6 +22,7 @@
 LINUXINCLUDE += -I$(srctree)/
 
 ccflags-y += -I$(src)
+ccflags-y += -I$(src)/sleep_monitor
 ccflags-y += -DCONFIG_OPLUS_SYSTEM_KERNEL_QCOM=1
 ccflags-y += -DCONFIG_OPLUS_SCHED_TUNE=1
 ccflags-y += -DCONFIG_OPLUS_FEATURE_SCHED_ASSIST=1
@@ -63,3 +64,10 @@ oplus_bsp_frame_boost-y := frame_boost/frame_boost.o frame_boost/frame_sysctl.o 
 # configures policies via /dev/vip_binder or /proc/oplus_vip_binder.
 obj-m += oplus_vip_binder.o
 oplus_vip_binder-y := vip_binder/binder_vip.o vip_binder/binder_vip_sysfs.o vip_binder/binder_vip_hash.o
+
+# sleep_monitor: read-only ADSP/CDSP/SLPI sleep-voter dump (smem items 590/591,
+# the standard Qualcomm uSleep monitor). No vendor hooks, no kernel interaction
+# beyond qcom_smem_get - pure diagnostics for battery-drain triage. If the
+# firmware does not publish the items, node reads fail gracefully.
+obj-m += oplus_subsys_sleep_monitor.o
+oplus_subsys_sleep_monitor-y := sleep_monitor/oplus_subsys_sleep_monitor.o
