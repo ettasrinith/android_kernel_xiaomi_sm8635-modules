@@ -52,3 +52,8 @@ oplus_bsp_sched_assist-y := sched_assist/sched_assist.o sched_assist/sa_common.o
 # control via /proc/eas_opt. Inert until /proc/eas_opt/eas_opt_enable is set.
 obj-m += oplus_bsp_eas_opt.o
 oplus_bsp_eas_opt-y := eas_opt/eas_opt.o eas_opt/oplus_cap.o eas_opt/oplus_iowait.o
+
+# frame_boost: per-frame cluster boost engine (WALT fb_feed), sysctl table at
+# /proc/sys/fbg/. Inert until fbg/frame_boost_enabled is set.
+obj-m += oplus_bsp_frame_boost.o
+oplus_bsp_frame_boost-y := frame_boost/frame_boost.o frame_boost/frame_sysctl.o frame_boost/frame_info.o frame_boost/frame_group.o frame_boost/cluster_boost.o frame_boost/frame_debug.o
