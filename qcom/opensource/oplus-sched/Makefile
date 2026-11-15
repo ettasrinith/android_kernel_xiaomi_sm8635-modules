@@ -57,3 +57,9 @@ oplus_bsp_eas_opt-y := eas_opt/eas_opt.o eas_opt/oplus_cap.o eas_opt/oplus_iowai
 # /proc/sys/fbg/. Inert until fbg/frame_boost_enabled is set.
 obj-m += oplus_bsp_frame_boost.o
 oplus_bsp_frame_boost-y := frame_boost/frame_boost.o frame_boost/frame_sysctl.o frame_boost/frame_info.o frame_boost/frame_group.o frame_boost/cluster_boost.o frame_boost/frame_debug.o
+
+# vip_binder: VIP binder thread policy (taxi threads). Registers the binder
+# vendor hooks only; disabled (binder_vip_policy_enable=false) until userspace
+# configures policies via /dev/vip_binder or /proc/oplus_vip_binder.
+obj-m += oplus_vip_binder.o
+oplus_vip_binder-y := vip_binder/binder_vip.o vip_binder/binder_vip_sysfs.o vip_binder/binder_vip_hash.o
