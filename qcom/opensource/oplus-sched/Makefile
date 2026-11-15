@@ -40,3 +40,10 @@ ccflags-y += -DCONFIG_OPLUS_CPUFREQ_IOWAIT_PROTECT=1
 # Inert until sched_assist drives it via the cgroup/task_group kabi slot.
 obj-m += oplus_bsp_schedtune.o
 oplus_bsp_schedtune-y := sched_tune/tune.o sched_tune/license.o
+
+# sched_assist: the vendor-hook glue. Allocates struct oplus_task_struct per
+# task (android_oem_data1 slot 5, with a slot-occupancy self-check that
+# aborts the load instead of panicking), registers the fair.c/core.c
+# scheduler hooks for ux/top-app boost, and exposes /proc/oplus_scheduler.
+obj-m += oplus_bsp_sched_assist.o
+oplus_bsp_sched_assist-y := sched_assist/sched_assist.o sched_assist/sa_common.o sched_assist/sa_sysfs.o sched_assist/sa_exec.o sched_assist/sa_fair.o sched_assist/sa_jankinfo.o sched_assist/sa_oemdata.o sched_assist/sa_priority.o sched_assist/sa_ddl.o sched_assist/sa_group.o sched_assist/sa_audio.o sched_assist/sa_balance.o sched_assist/sa_pipeline.o sched_assist/sa_blockio.o sched_assist/sa_hmbird.o
