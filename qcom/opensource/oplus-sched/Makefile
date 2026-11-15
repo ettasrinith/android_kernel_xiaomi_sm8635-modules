@@ -47,3 +47,8 @@ oplus_bsp_schedtune-y := sched_tune/tune.o sched_tune/license.o
 # scheduler hooks for ux/top-app boost, and exposes /proc/oplus_scheduler.
 obj-m += oplus_bsp_sched_assist.o
 oplus_bsp_sched_assist-y := sched_assist/sched_assist.o sched_assist/sa_common.o sched_assist/sa_sysfs.o sched_assist/sa_exec.o sched_assist/sa_fair.o sched_assist/sa_jankinfo.o sched_assist/sa_oemdata.o sched_assist/sa_priority.o sched_assist/sa_ddl.o sched_assist/sa_group.o sched_assist/sa_audio.o sched_assist/sa_balance.o sched_assist/sa_pipeline.o sched_assist/sa_blockio.o sched_assist/sa_hmbird.o
+
+# eas_opt: EAS vtime compensation (android_rvh_place_entity) and cpu capacity
+# control via /proc/eas_opt. Inert until /proc/eas_opt/eas_opt_enable is set.
+obj-m += oplus_bsp_eas_opt.o
+oplus_bsp_eas_opt-y := eas_opt/eas_opt.o eas_opt/oplus_cap.o eas_opt/oplus_iowait.o
